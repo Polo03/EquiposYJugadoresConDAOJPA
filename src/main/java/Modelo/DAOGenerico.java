@@ -32,13 +32,13 @@ public class DAOGenerico<T> {
             String nombreEquipo = (String) clase.getMethod("getNombre").invoke(object);
             Float estatura = (Float) clase.getMethod("getEstatura").invoke(object);
             Float peso = (Float) clase.getMethod("getPeso").invoke(object);
-            Integer idEquipo = (Integer) clase.getMethod("getIdEquipo").invoke(object);
+            Equipo idEquipo = (Equipo) clase.getMethod("getIdEquipo").invoke(object);
 
-            Query query = em.createNativeQuery("INSERT INTO jugador (nombre, estatura, peso, idEquipo) VALUES (?, ?, ?, ?)", Equipo.class);
+            Query query = em.createNativeQuery("INSERT INTO jugador (nombre, estatura, peso, idEquipo) VALUES (?, ?, ?, ?)", Jugador.class);
             query.setParameter(1, nombreEquipo);
             query.setParameter(2, estatura);
             query.setParameter(3, peso);
-            query.setParameter(4, idEquipo);
+            query.setParameter(4, idEquipo.getId());
             query.executeUpdate();
         }
 
@@ -57,10 +57,14 @@ public class DAOGenerico<T> {
     }
 
     //UPDATE
-    public void update(T object){
+    public boolean update(T object){
         tx.begin();
-        em.merge(object);
+        if(object != null)
+            em.merge(object);
+        else
+            return false;
         tx.commit();
+        return true;
     }
 
     //DELETE BY OBJECT
@@ -71,10 +75,14 @@ public class DAOGenerico<T> {
     }
 
     //DELETE BY ID
-    public void deleteById(int id){
+    public boolean deleteById(int id){
         tx.begin();
-        em.remove(em.find(clase, id));
+        if(em.find(clase, id) != null)
+            em.remove(em.find(clase, id));
+        else
+            return false;
         tx.commit();
+        return true;
     }
 
     //DELETE ALL
@@ -83,7 +91,4 @@ public class DAOGenerico<T> {
     }
 
 
-    /*public void dameClase(){
-        System.out.println(clase);
-    }*/
 }

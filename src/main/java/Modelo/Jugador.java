@@ -73,7 +73,7 @@ public class Jugador {
     }
 
     public Equipo getIdEquipo() {
-        return idEquipo;
+        return this.idEquipo;
     }
 
     public void setIdEquipo(Equipo idEquipo) {
@@ -82,12 +82,6 @@ public class Jugador {
 
     @Override
     public String toString() {
-        return "Jugador{" +
-                "id=" + id +
-                ", nombre='" + nombre + '\'' +
-                ", estatura=" + estatura +
-                ", peso=" + peso +
-                ", idEquipo=" + idEquipo +
-                '}';
+        return id+"=>"+nombre+", "+estatura+" cm, "+peso+"kg, "+idEquipo;
     }
 }
